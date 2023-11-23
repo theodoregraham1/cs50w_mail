@@ -30,8 +30,8 @@ function load_mailbox(mailbox) {
 	console.log('Loaded mailbox: ' + mailbox)
 
     // Show the mailbox and hide other views
+	hide_views()
     document.querySelector('#emails-view').style.display = 'block';
-    document.querySelector('#compose-view').style.display = 'none';
 
     // Show the mailbox name
     document.querySelector('#emails-view').innerHTML = `
@@ -68,16 +68,26 @@ function load_mailbox(mailbox) {
 function load_email(email) {
 	console.log('Loaded email - id: ' + email.id);
 
-	// Show the email and hide other views
+	// Show the email view and hide other views
 	hide_views();
     document.querySelector('#email-view').style.display = 'block';
-	const view = document.querySelector('#email-view');
 
-	view.append(`<div><b>From:</b> ${email.sender}</div>`);
-	view.append(`<div><b>To:</b> ${email.recipients}</div>`);
-	view.append(`<div><b>Subject:</b> ${email.subject}</div>`);
-	view.append(`<div><b>Timestamp:</b> ${email.timestamp}</div>`);
+	// Show email information
+	document.querySelector('#email-from').innerHTML = `<b>From:</b> ${email.sender}`;
+	document.querySelector('#email-to').innerHTML = `<b>To:</b> ${email.recipients}`;
+	document.querySelector('#email-subject').innerHTML = `<b>Subject:</b> ${email.subject}`;
+	document.querySelector('#email-timestamp').innerHTML = `<b>Timestamp:</b> ${email.timestamp}`;
+	document.querySelector(`#email-body`).innerHTML = email.body
 
+	// Mark email as read
+	if (!email.read) {
+		fetch(`emails/${email.id}`, {
+			method: 'PUT',
+			body: JSON.stringify({
+				read: true
+			})
+		}).then(() => console.log("Email marked as read - id: " + email.id))
+	}
 }
 
 function send_email() {
