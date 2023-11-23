@@ -77,7 +77,15 @@ function load_email(email) {
 	document.querySelector('#email-to').innerHTML = `<b>To:</b> ${email.recipients}`;
 	document.querySelector('#email-subject').innerHTML = `<b>Subject:</b> ${email.subject}`;
 	document.querySelector('#email-timestamp').innerHTML = `<b>Timestamp:</b> ${email.timestamp}`;
-	document.querySelector(`#email-body`).innerHTML = email.body
+	document.querySelector('#email-body').innerHTML = email.body
+
+	// Allow archiving
+	document.querySelector('#email-archive-form').onsubmit = () => archive_email(email);
+	if (email["archived"]) {
+		document.querySelector('#email-archive-button').value = "Unarchive";
+	} else {
+		document.querySelector('#email-archive-button').value = "Archive";
+	}
 
 	// Mark email as read
 	if (!email.read) {
@@ -108,6 +116,23 @@ function send_email() {
         });
 
 	load_mailbox('inbox')
+	return false;
+}
+
+function archive_email(email) {
+	// Archives or unarchives an email
+
+	fetch(`/emails/${email.id}`, {
+		method: 'PUT',
+		body: JSON.stringify({
+			archived: !(email["archived"])
+		})
+	})
+		.then(r => {
+			console.log(r);
+			load_mailbox("inbox");
+		});
+
 	return false;
 }
 
