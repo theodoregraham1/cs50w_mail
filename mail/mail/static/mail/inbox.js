@@ -97,7 +97,7 @@ function load_email(email) {
 	document.querySelector('#email-to').innerHTML = `<b>To:</b> ${email.recipients}`;
 	document.querySelector('#email-subject').innerHTML = `<b>Subject:</b> ${email.subject}`;
 	document.querySelector('#email-timestamp').innerHTML = `<b>Timestamp:</b> ${email.timestamp}`;
-	document.querySelector('#email-body').innerHTML = email.body
+	document.querySelector('#email-body').innerHTML = `<pre>${email.body}</pre>`
 
 	// Allow archiving
 	document.querySelector('#email-archive-form').onsubmit = () => archive_email(email);

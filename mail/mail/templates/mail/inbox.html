@@ -37,17 +37,18 @@
         <div id="email-subject"></div>
         <div id="email-timestamp"></div>
 
-        <form id="email-reply-form">
-            <input id="email-reply-button" type="submit" class="btn btn-sm btn-outline-primary" value="Reply">
-        </form>
-        <form id="email-archive-form">
-            <input id="email-archive-button" type="submit" class="btn btn-sm btn-outline-primary" value="">
-        </form>
+        <div class="row ms-3">
+            <form class="mx-2" id="email-reply-form">
+                <input id="email-reply-button" type="submit" class="btn btn-sm btn-outline-primary" value="Reply">
+            </form>
 
+            <form id="email-archive-form">
+                <input id="email-archive-button" type="submit" class="btn btn-sm btn-outline-primary" value="">
+            </form>
+        </div>
         <hr>
+
         <div id="email-body"></div>
-
-
     </div>
 {% endblock %}
 
