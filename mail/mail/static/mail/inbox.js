@@ -25,6 +25,26 @@ function compose_email() {
     document.querySelector('#compose-body').value = '';
 }
 
+function compose_reply(email) {
+	console.log("Compose reply to email - id: "+email.id)
+	// Show compose view and hide other views
+    hide_views()
+    document.querySelector('#compose-view').style.display = 'block';
+
+	// Load composition fields
+	document.querySelector('#compose-recipients').value = email.sender;
+
+	const subject_field = document.querySelector('#compose-subject');
+	if (email.subject.slice(0,2) === "Re:") {
+		subject_field.value = email.subject;
+	} else {
+		subject_field.value = "Re: " + email.subject;
+	}
+
+	document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: \n ${email.body}\n`;
+	return false;
+}
+
 function load_mailbox(mailbox) {
 
 	console.log('Loaded mailbox: ' + mailbox)
@@ -86,6 +106,9 @@ function load_email(email) {
 	} else {
 		document.querySelector('#email-archive-button').value = "Archive";
 	}
+
+	// Allow reply
+	document.querySelector('#email-reply-form').onsubmit = () => compose_reply(email);
 
 	// Mark email as read
 	if (!email.read) {
